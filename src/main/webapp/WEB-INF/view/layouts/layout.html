@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header">
+    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0"/>
+    <link href="/bs/css/bootstrap.min.css" th:href="@{/bs/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="/css/custom.css" th:href="@{/css/custom.css}" rel="stylesheet"/>
+    <div class="page-header">
+        <div sec:authorize="isAuthenticated()">
+            <div class="btn-group pull-right">
+                <div class="dropdown-toggle usersession" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
+                         th:src="@{/images/defaultavatar.jpg}"/>
+                    <div sec:authentication="principal.username">User</div>
+                    <span class="caret"></span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button type="button" class="btn btn-lg-2" id="profile" value="Profile">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <input type="button" class="btn-danger btn-primary btn-lg btn-block" id="signoutbtn" value="Sign Out"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <h1 th:text="#{header.title}">Title</h1>
+    </div>
+</head>
+<body>
+<div th:fragment="footer">
+    <div id="footer">
+        <div class="container">
+            <p th:value="copyRightText">Copy rights</p>
+        </div>
+    </div>
+    <script src="/js/jquery-1.12.1.min.js" th:src="@{/js/jquery-1.12.1.min.js}"></script>
+    <script src="/bs/js/bootstrap.min.js" th:src="@{/bs/js/bootstrap.min.js}"></script>
+    <script src="/js/login.js" th:src="@{/js/login.js}"></script>
+</div>
+</body>
+</html>
