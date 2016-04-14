@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.gabiksoft.webapp.service.RoleService;
 import com.gabiksoft.webapp.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,8 @@ public class RegisterController {
     private UserService userService;
 
     @RequestMapping("/register")
-    public String goRegister(){
+    public String goRegister(HttpServletRequest request){
+
         return "registration";
     }
 
