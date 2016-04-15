@@ -13,6 +13,8 @@
     flex-direction: column;
     border-style: solid;
     border-width: 1px;
+    cursor: pointer;
+    border-radius: 15px;
 }
 
 #uploadAvatar {
@@ -36,4 +38,5 @@
     vertical-align: middle;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.50);
+    border-radius: 0 0 15px 15px;
 }

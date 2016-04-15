@@ -2,40 +2,49 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="layouts/layout :: header"></head>
+<link href="/css/register.css" th:href="@{/css/register.css}" rel="stylesheet"/>
 <link href="/css/avatar.css" th:href="@{/css/avatar.css}" rel="stylesheet"/>
 <body>
 <div class="container">
-    <form  action="registerme" method="post" enctype="application/x-www-form-urlencoded" class="form-register" role="form">
+    <form method="post" enctype="application/x-www-form-urlencoded" class="form-register"
+          role="form">
         <h3 th:text="#{form.registration.title}">New user registration:</h3>
-        <div style="background-image: url('/images/defaultavatar.jpg');"
-                id="avatarPreview">
-            <input id="uploadAvatar" type="file" name="file" class="img"
-                   title="" />
-            <div id="avatarMessage">
-                Click to select avatar
+        <div class="row">
+            <div class="col-sm-4">
+                <div style="background-image: url('/images/defaultavatar.jpg');"
+                     id="avatarPreview">
+                    <input id="uploadAvatar" type="file" name="file" class="img"
+                           title=""/>
+
+                    <div id="avatarMessage" th:text="#{form.registration.avatarmsg}">
+                        Click to select avatar
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="username" th:text="#{form.username}">Name*:</label>
-            <input type="text" name="username" class="form-control input-md" id="username"/>
-        </div>
-        <div class="form-group">
-            <label for="password" th:text="#{form.password}">Password*:</label>
-            <input type="password" name="password" class="form-control input-md" id="password"/>
-        </div>
-        <div class="form-group">
-            <label for="email" th:text="#{form.email}">E-mail*:</label>
-            <input type="email" name="email" class="form-control input-md" id="email"/>
-        </div>
-        <div class="form-group">
-            <input type="button" id="registerme" class="btn btn-regme btn-lg-2" value="Ok, register me" th:value="#{button.registerme}"/>
+            <div class="col-sm-7">
+                <div class="form-group">
+                    <label for="username" th:text="#{form.username}">Name*:</label>
+                    <input type="text" name="username" class="form-control input-md" id="username"/>
+                </div>
+                <div class="form-group">
+                    <label for="password" th:text="#{form.password}">Password*:</label>
+                    <input type="password" name="password" class="form-control input-md" id="password"/>
+                </div>
+                <div class="form-group">
+                    <label for="email" th:text="#{form.email}">E-mail*:</label>
+                    <input type="email" name="email" class="form-control input-md" id="email"/>
+                </div>
+                <div class="form-group">
+                    <input type="button" id="registerme" class="btn btn-regme btn-lg-2" value="Ok, register me"
+                           th:value="#{button.registerme}"/>
+                </div>
+            </div>
         </div>
     </form>
 </div>
 
 <div th:include="layouts/layout :: footer"></div>
+</body>
 <script src="/js/register.js" th:src="@{/js/register.js}"></script>
 <script src="/js/avatar.js" th:src="@{/js/avatar.js}"></script>
-</body>
-
 </html>

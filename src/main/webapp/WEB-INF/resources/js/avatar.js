@@ -1,7 +1,11 @@
 $(function() {
-    var avatarContainer = $("#uploadAvatar");
+    var avatarUpload = $('#uploadAvatar');
+    var avatarPreview = $('#avatarPreview');
     var avatarMessage = $('#avatarMessage');
-    $(avatarContainer).on(
+    $(avatarMessage).on('click', function() {
+        $(avatarUpload).trigger('click');
+    })
+    $(avatarUpload).on(
         "change",
         function() {
             var files = !!this.files ? this.files : [];
@@ -14,31 +18,29 @@ $(function() {
 
                 reader.onloadend = function() { // set image data as background of div
                     var result = this.result;
-                    $("#avatarPreview").animate(
+                    $(avatarPreview).animate(
                         {
                             opacity : '0'
                         },
                         "fast",
                         function() {
-                            $("#avatarPreview").css(
+                            $(avatarPreview).css(
                                 "background-image",
                                 "url(" + result + ")");
                         });
 
-                    $("#avatarPreview").animate({
+                    $(avatarPreview).animate({
                         opacity : '1'
-                    }, "slow");
+                    }, "fast");
                 };
             }
         });
-    $(avatarContainer).on({
+    $(avatarPreview).on({
         mouseenter: function() {
             $(avatarMessage).slideDown(100);
         },
         mouseleave: function() {
-            if (e.target != avatarContainer) {
             $(avatarMessage).slideUp(100);
-        }
         }
     });
 });
