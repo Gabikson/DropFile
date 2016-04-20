@@ -3,14 +3,15 @@ header = $("meta[name='_csrf_header']").attr("content");
 
 $('#registerme').on('click',function(){
     $.ajax({
-        url:'registerme',
+        url: 'registerme',
         type: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
+        enctype: 'multipart/form-data',
         data: {
-            username: $('#username').val(),
-            password: $('#password').val(),
-            email: $('#email').val(),
-            '_csrf':token
+            'username' : $('#username').val(),
+            'password' : $('#password').val(),
+            'email'    : $('#email').val(),
+            'avatar'   : $('#uploadAvatar')[0].files[0],
+            '_csrf'    : token
         },
         beforeSend:function(xhr){
             xhr.setRequestHeader('_csrf_header', header);
