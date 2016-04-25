@@ -51,7 +51,7 @@ public class RegisterController {
         userService.create(user);
 
         try {
-            avatarService.save(avatar.getName(), avatar.getBytes());
+            avatarService.save(avatar.getOriginalFilename(), avatar.getBytes());
         } catch (IOException e) {
             return new JSONResponse(1, e.getMessage()).toString();
         }
