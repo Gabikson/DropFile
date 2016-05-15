@@ -2,6 +2,7 @@ package com.gabiksoft.webapp.controller;
 
 import com.gabiksoft.webapp.constants.Messages;
 import com.gabiksoft.webapp.constants.Roles;
+import com.gabiksoft.webapp.email.MailClient;
 import com.gabiksoft.webapp.entity.Role;
 import com.gabiksoft.webapp.entity.User;
 import com.gabiksoft.webapp.service.FileService;
@@ -30,9 +31,13 @@ public class RegisterController {
     @Autowired
     private FileService avatarService;
 
+    @Autowired
+    private MailClient mail;
+
     @RequestMapping("/register")
     public String goRegister(HttpServletRequest request) {
-
+        mail.setAddressTo("gabikson@gmail.com");
+        mail.sendMessage("Account confirm", "Please go to: http://www.google.com.ua");
         return "registration";
     }
 

@@ -73,5 +73,8 @@
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.liquibase:liquibase-core:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.13" level="project" />
+    <orderEntry type="library" name="Maven: javax.mail:javax.mail-api:1.5.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.5.3" level="project" />
   </component>
 </module>
