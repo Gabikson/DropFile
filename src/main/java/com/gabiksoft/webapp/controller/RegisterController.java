@@ -3,6 +3,7 @@ package com.gabiksoft.webapp.controller;
 import com.gabiksoft.webapp.constants.Messages;
 import com.gabiksoft.webapp.constants.Roles;
 import com.gabiksoft.webapp.email.MailClient;
+import com.gabiksoft.webapp.entity.Confirm;
 import com.gabiksoft.webapp.entity.Role;
 import com.gabiksoft.webapp.entity.User;
 import com.gabiksoft.webapp.service.FileService;
@@ -36,23 +37,21 @@ public class RegisterController {
 
     @RequestMapping("/register")
     public String goRegister(HttpServletRequest request) {
-        mail.setAddressTo("gabikson@gmail.com");
-        mail.sendMessage("Account confirm", "Please go to: http://www.google.com.ua");
         return "registration";
     }
 
     @RequestMapping(value = "/registerme", method = RequestMethod.POST)
     public @ResponseBody String registerUser(@RequestParam("username") String username,
-                            @RequestParam("password") String password,
-                            @RequestParam("email") String email,
-                            @RequestParam("avatar") MultipartFile avatar) {
+                                             @RequestParam("password") String password,
+                                             @RequestParam("email") String email,
+                                             @RequestParam("avatar") MultipartFile avatar) {
         if (userService.userWithNameExists(username)) {
             return new JSONResponse(1, Messages.USER_NAME_ALREADY_EXISTS).toString();
         }
 
         Set<Role> userRole = new HashSet<Role>();
         userRole.add(getRoleUser());
-        User user = new User(username, password, true, email, userRole);
+        User user = new User(username, password, false, email, userRole, avatar.getOriginalFilename());
         userService.create(user);
 
         try {
@@ -61,10 +60,25 @@ public class RegisterController {
             return new JSONResponse(1, e.getMessage()).toString();
         }
 
+        mail.setAddressTo(user.getEmail());
+        mail.sendMessage("Account confirm", "Please go to: http://www.google.com.ua");
         return new JSONResponse().toString();
+    }
+
+    @RequestMapping(value = "/account/confirm/{activation_id}", method = RequestMethod.GET)
+    public String confirmEmail() {
+
+        User user = null;
+        user.setEnabled(true);
+        userService.update(user);
+        return "emailconfirm";
     }
 
     private Role getRoleUser() {
         return roleService.findByFieldValue("ROLE", Roles.ROLE_USER);
+    }
+
+    private Confirm buildConfirm() {
+       return new Confirm();
     }
 }

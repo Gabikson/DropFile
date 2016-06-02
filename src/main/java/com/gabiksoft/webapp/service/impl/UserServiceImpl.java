@@ -5,6 +5,7 @@ import com.gabiksoft.webapp.dao.DAO;
 import com.gabiksoft.webapp.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.gabiksoft.webapp.service.UserService;
 
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private DAO<User> dao;
@@ -31,38 +33,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void create(User user) {
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
         dao.create(user);
     }
 
     @Override
-    @Transactional
     public void update(User user) {
         dao.update(user);
     }
 
     @Override
-    @Transactional
     public void delete(int id) {
         dao.delete(dao.read(id));
     }
 
     @Override
-    @Transactional
     public User getById(int id) {
         return dao.read(id);
     }
 
     @Override
-    @Transactional
     public User findByFieldValue(String field, String value) {
         return dao.findByFieldValue(field, value);
     }
 
     @Override
-    @Transactional
     public List<User> getAll() {
         return dao.getAll();
     }

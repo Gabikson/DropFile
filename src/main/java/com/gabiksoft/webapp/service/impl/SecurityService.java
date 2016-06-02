@@ -1,6 +1,7 @@
 package com.gabiksoft.webapp.service.impl;
 
 
+import com.gabiksoft.webapp.exceptions.AccountNotActiveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +24,13 @@ public class SecurityService {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public boolean doAuthentication(String username, String password) throws UsernameNotFoundException, BadCredentialsException{
+    public boolean doAuthentication(String username, String password) throws UsernameNotFoundException, BadCredentialsException, AccountNotActiveException {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
         User user = (User) userDetailsService.loadUserByUsername(username);
+        if (!user.isEnabled()) {
+            throw new AccountNotActiveException(username);
+        }
         authenticationToken.setDetails(user);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -36,5 +40,10 @@ public class SecurityService {
     public void doUnAuthentication() {
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
         SecurityContextHolder.clearContext();
+    }
+
+    public User getCurrentUser() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user;
     }
 }

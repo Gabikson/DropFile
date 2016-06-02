@@ -18,6 +18,7 @@ public class AvatarServiceImpl implements FileService {
     @Override
     public void save(String name, byte[] bytes) throws IOException {
         String avatarFolder = environment.getProperty("avatar.path") + "\\";
+        makeIfNotExists(avatarFolder);
         OutputStream avatar = new FileOutputStream(avatarFolder + name);
         avatar.write(bytes);
         avatar.flush();
@@ -28,5 +29,12 @@ public class AvatarServiceImpl implements FileService {
     public boolean remove(String name) {
         String avatarFolder = environment.getProperty("avatar.path") + "\\";
         return new File(avatarFolder+name).delete();
+    }
+
+    private void makeIfNotExists(String path) {
+        File file = new File(path);
+        if(!file.exists()) {
+            file.mkdir();
+        }
     }
 }
