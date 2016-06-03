@@ -20,7 +20,7 @@ public class StringGenerator {
     private Random random;
 
     private StringGenerator() throws OperationNotSupportedException {
-        throw new OperationNotSupportedException();
+        random = new Random();
     }
 
     public String generateString(int length, MODE mode) {

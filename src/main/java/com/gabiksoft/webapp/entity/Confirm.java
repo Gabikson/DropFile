@@ -20,7 +20,7 @@ public class Confirm {
     @Column(name = "idType")
     private String idType;
 
-    @Column
+    @Column(name = "value")
     private String value;
 
     public Confirm() {

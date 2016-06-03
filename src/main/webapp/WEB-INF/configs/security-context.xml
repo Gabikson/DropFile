@@ -20,6 +20,7 @@
 
         <intercept-url pattern="/signin" access="isAnonymous()"/>
         <intercept-url pattern="/login" access="isAnonymous()"/>
+        <intercept-url pattern=" /account/confirm/**" access="isAnonymous()"/>
 
         <intercept-url pattern="/register" access="isAnonymous()"/>
         <intercept-url pattern="/registerme" access="isAnonymous()"/>

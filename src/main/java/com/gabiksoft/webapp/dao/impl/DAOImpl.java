@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,12 @@ public class DAOImpl<T> implements DAO<T> {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    public DAOImpl() {
+//        ParameterizedType genericSuperclass = (ParameterizedType) getClass()
+//                .getGenericSuperclass();
+//        this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+    }
 
     @Override
     public Class<T> getEntityClass() {
@@ -51,7 +58,7 @@ public class DAOImpl<T> implements DAO<T> {
     @Override
     public T findByFieldValue(String field, String value) {
         return (T) entityManager.createQuery("from " + entityClass.getName() +
-                " where " + field + "='" + value+"'", entityClass).getSingleResult();
+                " where " + field + "=" + value, entityClass).getSingleResult();
     }
 
     @Override
