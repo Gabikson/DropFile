@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class GenericSeviceImpl<T> implements GenericService<T>{
+public abstract class GenericSeviceImpl<T> implements GenericService<T>{
 
     @Autowired
     protected DAO<T> dao;
