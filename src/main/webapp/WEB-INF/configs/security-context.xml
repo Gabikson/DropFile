@@ -17,6 +17,7 @@
         <intercept-url pattern="/css/**" access="permitAll"/>
         <intercept-url pattern="/bs/**" access="permitAll"/>
         <intercept-url pattern="/images/**" access="permitAll"/>
+        <intercept-url pattern="/avatar/userphoto" access="permitAll"/>
 
         <intercept-url pattern="/signin" access="isAnonymous()"/>
         <intercept-url pattern="/login" access="isAnonymous()"/>

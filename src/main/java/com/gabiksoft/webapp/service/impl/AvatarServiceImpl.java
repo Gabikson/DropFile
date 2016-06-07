@@ -31,6 +31,13 @@ public class AvatarServiceImpl implements FileService {
         return new File(avatarFolder+name).delete();
     }
 
+    @Override
+    public InputStream get(String fileName) throws IOException {
+        String avatarFolder = environment.getProperty("avatar.path") + "\\";
+        FileInputStream fis = new FileInputStream(avatarFolder+fileName);
+        return fis;
+    }
+
     private void makeIfNotExists(String path) {
         File file = new File(path);
         if(!file.exists()) {

@@ -58,7 +58,7 @@ public class DAOImpl<T> implements DAO<T> {
     @Override
     public T findByFieldValue(String field, String value) {
         return (T) entityManager.createQuery("from " + entityClass.getName() +
-                " where " + field + "='" + value+"'", entityClass).getSingleResult();
+                " where " + field + "='" + value + "'", entityClass).getSingleResult();
     }
 
     @Override

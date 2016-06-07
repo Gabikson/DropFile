@@ -3,17 +3,13 @@ package com.gabiksoft.webapp.service.impl;
 
 import com.gabiksoft.webapp.dao.DAO;
 import com.gabiksoft.webapp.service.GenericService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
 @Transactional
 public abstract class GenericSeviceImpl<T> implements GenericService<T>{
 
-    @Autowired
     protected DAO<T> dao;
 
     @Override

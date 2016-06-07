@@ -88,7 +88,6 @@
 
     <context:component-scan base-package="com.gabiksoft.webapp.dao"/>
     <context:component-scan base-package="com.gabiksoft.webapp.service"/>
-
     <context:component-scan base-package="com.gabiksoft.webapp.email"/>
     <context:component-scan base-package="com.gabiksoft.webapp.utils"/>
 

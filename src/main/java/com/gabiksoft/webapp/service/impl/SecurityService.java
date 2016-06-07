@@ -2,6 +2,7 @@ package com.gabiksoft.webapp.service.impl;
 
 
 import com.gabiksoft.webapp.exceptions.AccountNotActiveException;
+import com.gabiksoft.webapp.exceptions.UserNotAuthenticated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,8 +43,13 @@ public class SecurityService {
         SecurityContextHolder.clearContext();
     }
 
-    public User getCurrentUser() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public User getSecurityUser() throws UserNotAuthenticated {
+        User user = null;
+        if(!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+            throw new UserNotAuthenticated("No authentication found at current context");
+        }
+        user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user;
+
     }
 }

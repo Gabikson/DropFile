@@ -6,10 +6,12 @@ import com.gabiksoft.webapp.service.ConfirmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class ConfirmServiceImpl extends GenericSeviceImpl<Confirm> implements ConfirmService {
+import javax.transaction.Transactional;
 
-    private DAO<Confirm> dao;
+
+@Service
+@Transactional
+public class ConfirmServiceImpl extends GenericSeviceImpl<Confirm> implements ConfirmService {
 
     @Autowired
     public ConfirmServiceImpl(DAO<Confirm> dao) {

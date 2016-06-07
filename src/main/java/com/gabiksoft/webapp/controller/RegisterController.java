@@ -58,20 +58,26 @@ public class RegisterController {
             return new JSONResponse(1, Messages.USER_NAME_ALREADY_EXISTS).toString();
         }
 
+        String avatarFileName = null;
+
+        if(avatar != null) {
+            avatarFileName = avatar.getOriginalFilename();
+            try {
+                avatarService.save(avatarFileName, avatar.getBytes());
+            } catch (IOException e) {
+                return new JSONResponse(1, e.getMessage()).toString();
+            }
+        }
+
         Set<Role> userRole = new HashSet<Role>();
         userRole.add(getRoleUser());
-        User user = new User(username, password, false, email, userRole, avatar.getOriginalFilename());
+        User user = new User(username, password, false, email, userRole, avatarFileName);
         userService.create(user);
 
         Confirm confirm = buildConfirm(String.valueOf(user.getId()), ConfirmType.ACCOUNT,
                 stringGenerator.generateString(20, StringGenerator.MODE.MODE_LOWER_CASE_LETTERS));
         confirmService.create(confirm);
 
-        try {
-            avatarService.save(avatar.getOriginalFilename(), avatar.getBytes());
-        } catch (IOException e) {
-            return new JSONResponse(1, e.getMessage()).toString();
-        }
 
         mail.setAddressTo(user.getEmail());
         mail.sendMessage("Account confirm", "Please go to: http://localhost:8080/account/confirm/"+confirm.getValue());

@@ -3,27 +3,26 @@ package com.gabiksoft.webapp.service.impl;
 
 import com.gabiksoft.webapp.dao.DAO;
 import com.gabiksoft.webapp.entity.User;
+import com.gabiksoft.webapp.exceptions.UserNotAuthenticated;
+import com.gabiksoft.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import com.gabiksoft.webapp.service.UserService;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
-
-
-import java.util.List;
-
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends GenericSeviceImpl<User> implements UserService {
 
-    private DAO<User> dao;
+
 
     @Autowired
     private ShaPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SecurityService securityService;
 
 
     @Autowired
@@ -39,30 +38,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        dao.update(user);
-    }
-
-    @Override
-    public void delete(int id) {
-        dao.delete(dao.read(id));
-    }
-
-    @Override
-    public User getById(int id) {
-        return dao.read(id);
-    }
-
-    @Override
-    public User findByFieldValue(String field, String value) {
-        return dao.findByFieldValue(field, value);
-    }
-
-    @Override
-    public List<User> getAll() {
-        return dao.getAll();
-    }
-
     public boolean userWithNameExists(String login){
         try{
             dao.findByFieldValue("login", login);
@@ -71,4 +46,10 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
+    @Override
+    public User getCurrentUser() throws UserNotAuthenticated {
+        return dao.findByFieldValue("login", securityService.getSecurityUser().getUsername());
+    }
+
 }

@@ -11,18 +11,27 @@
     <link href="/bs/css/bootstrap.min.css" th:href="@{/bs/css/bootstrap.min.css}" rel="stylesheet"/>
     <link href="/css/custom.css" th:href="@{/css/custom.css}" rel="stylesheet"/>
     <div class="page-header">
-        <div>
-            <span><a href="?lang=en">EN</a>|<a href="?lang=uk">UA</a></span>
+        <div class="btn-group pull-right">
+            <span><a href="?lang=en"><img class="img-circle lang" src="/images/en.png"
+                                          th:src="@{/images/en.png}"/></a> - <a href="?lang=uk"> <img
+                    class="img-circle lang" src="/images/ua.png"
+                    th:src="@{/images/ua.png}"/></a></span>
         </div>
         <div sec:authorize="isAuthenticated()">
             <div class="btn-group pull-right">
-                <div>
-                    <span><a href="?lang=en">UA</a>|<a href="?lang=uk">UA</a></span>
-                </div>
-                <div class="dropdown-toggle usersession" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
-                         th:src="@{/images/defaultavatar.jpg}"/>
-                    <div sec:authentication="principal.username">User</div>
+                <div class="dropdown-toggle usersession" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    <div th:switch="${has_avatar == true}">
+                        <div th:case="${true}">
+                            <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
+                                 th:src="@{/avatar/userphoto}"/>
+                        </div>
+                        <div th:case="${false}">
+                            <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
+                                 th:src="@{/images/defaultavatar.jpg}"/>
+                        </div>
+                    </div>
+                    <div sec:authentication="principal.username">User name</div>
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu">
@@ -33,19 +42,22 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <input type="button" class="btn-danger btn-primary btn-lg btn-block" id="signoutbtn" value="Sign Out"/>
+                        <input type="button" class="btn-danger btn-primary btn-lg btn-block" id="signoutbtn"
+                               value="Sign Out"/>
                     </li>
                 </ul>
             </div>
         </div>
+        <a href="/">
         <h1 th:text="#{header.title}">Title</h1>
+        </a>
     </div>
 </head>
 <body>
 <div th:fragment="footer">
     <div id="footer">
         <div class="container">
-            <p th:value="copyRightText">Copy rights</p>
+            <p th:value="#{staticVariables.copyRightText}">Copy Rights</p>
         </div>
     </div>
     <script src="/js/jquery-1.12.1.min.js" th:src="@{/js/jquery-1.12.1.min.js}"></script>
