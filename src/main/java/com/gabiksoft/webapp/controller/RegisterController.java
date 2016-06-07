@@ -90,7 +90,7 @@ public class RegisterController {
         User user = userService.getById(Integer.parseInt(userId));
         user.setEnabled(true);
         userService.update(user);
-        return "emailconfirm";
+        return "accountconfirm";
     }
 
     private Role getRoleUser() {

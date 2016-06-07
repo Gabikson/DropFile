@@ -43,7 +43,7 @@
                     <li role="separator" class="divider"></li>
                     <li>
                         <input type="button" class="btn-danger btn-primary btn-lg btn-block" id="signoutbtn"
-                               value="Sign Out"/>
+                             th:value="#{session.signout}"  value="Sign Out"/>
                     </li>
                 </ul>
             </div>
@@ -57,7 +57,7 @@
 <div th:fragment="footer">
     <div id="footer">
         <div class="container">
-            <p th:value="#{staticVariables.copyRightText}">Copy Rights</p>
+            <p th:value="${copyRightText}">Copy Rights</p>
         </div>
     </div>
     <script src="/js/jquery-1.12.1.min.js" th:src="@{/js/jquery-1.12.1.min.js}"></script>
