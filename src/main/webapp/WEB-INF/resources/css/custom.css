@@ -1,6 +1,7 @@
 body {
     background: url("/images/background.jpg") repeat;
     background-size: cover;
+    margin: -40px 0 0 0;
 }
 
 .body {
@@ -62,12 +63,14 @@ form {
     padding: 5px;
 }
 
-.usersession{
+.user-session{
     text-align: center;
 }
 
-.dropdown-menu{
+.session-menu{
     background: #aaa;
+    min-width: 100px;
+    /*display: none*/
 }
 
 .menuavatar{
@@ -76,8 +79,8 @@ form {
 }
 
 .lang {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
 }
 
 .lang:hover{
