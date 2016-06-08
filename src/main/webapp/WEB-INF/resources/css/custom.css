@@ -1,7 +1,7 @@
 body {
     background: url("/images/background.jpg") repeat;
     background-size: cover;
-    margin: -40px 0 0 0;
+    margin: 0px 0 0 0;
 }
 
 .body {
@@ -39,7 +39,7 @@ form {
 }
 
 .btn:focus,.btn:active:focus{
-   outline: 0 none;
+    outline: 0 none;
 }
 
 .btn-link:focus,.btn-link:active:focus{
@@ -68,9 +68,8 @@ form {
 }
 
 .session-menu{
-    background: #aaa;
-    min-width: 100px;
-    /*display: none*/
+    background: #eee4ff;
+    /*min-width: 100px;*/
 }
 
 .menuavatar{
@@ -90,4 +89,6 @@ form {
 
 .page-header {
     background: rgba(255, 255, 255, 0.80);
+    margin: 0 0 10px 0px;
+    padding: 0 0 80px 0;
 }
