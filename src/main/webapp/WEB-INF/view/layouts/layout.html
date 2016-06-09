@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="header">
-    <title>Title</title>
+    <title>qqq</title>
     <meta charset="UTF-8"/>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -65,7 +65,7 @@
 <div th:fragment="footer">
     <div id="footer">
         <div class="container">
-            <p th:value="${copyRightText}">Copy Rights</p>
+            <p th:value="${#copyRightText}">Copy Rights</p>
         </div>
     </div>
     <script src="/js/jquery-1.12.1.min.js" th:src="@{/js/jquery-1.12.1.min.js}"></script>

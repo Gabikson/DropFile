@@ -8,7 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.gabiksoft.webapp.service.impl.SecurityService;
+import com.gabiksoft.webapp.service.impl.SecurityServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     @Autowired
-    private SecurityService securityService;
+    private SecurityServiceImpl securityService;
 
     @RequestMapping("/login")
     public String goLogin(HttpServletRequest request, HttpServletResponse response) {

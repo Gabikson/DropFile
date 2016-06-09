@@ -64,6 +64,7 @@
     <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
         <property name="templateEngine" ref="templateEngine"/>
         <property name="characterEncoding" value="UTF-8"/>
+        <property name="cache" value="false"/>
     </bean>
 
     <bean name="main" class="org.thymeleaf.spring4.view.ThymeleafView">

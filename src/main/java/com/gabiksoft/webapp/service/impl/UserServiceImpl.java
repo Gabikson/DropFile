@@ -22,7 +22,7 @@ public class UserServiceImpl extends GenericSeviceImpl<User> implements UserServ
     private ShaPasswordEncoder passwordEncoder;
 
     @Autowired
-    private SecurityService securityService;
+    private SecurityServiceImpl securityService;
 
 
     @Autowired
