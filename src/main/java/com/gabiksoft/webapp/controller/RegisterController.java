@@ -2,6 +2,7 @@ package com.gabiksoft.webapp.controller;
 
 import com.gabiksoft.webapp.constants.Messages;
 import com.gabiksoft.webapp.constants.Roles;
+import com.gabiksoft.webapp.constants.URLS;
 import com.gabiksoft.webapp.email.MailClient;
 import com.gabiksoft.webapp.entity.Confirm;
 import com.gabiksoft.webapp.entity.Role;
@@ -11,6 +12,7 @@ import com.gabiksoft.webapp.service.ConfirmService;
 import com.gabiksoft.webapp.service.FileService;
 import com.gabiksoft.webapp.utils.JSONResponse;
 import com.gabiksoft.webapp.utils.StringGenerator;
+import com.gabiksoft.webapp.utils.TemplateCompiler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,16 +48,20 @@ public class RegisterController {
     @Autowired
     private ConfirmService confirmService;
 
+    @Autowired
+    private TemplateCompiler compiler;
+
     @RequestMapping("/register")
     public String goRegister(HttpServletRequest request) {
         return "registration";
     }
 
     @RequestMapping(value = "/registerme", method = RequestMethod.POST)
-    public @ResponseBody String registerUser(@RequestParam("username") String username,
+    public @ResponseBody String registerUser(HttpServletRequest request,
+                                             @RequestParam("username") String username,
                                              @RequestParam("password") String password,
                                              @RequestParam("email") String email,
-                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar) {
+                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar) throws Exception {
         if (userService.userWithNameExists(username)) {
             return new JSONResponse(1, Messages.USER_NAME_ALREADY_EXISTS).toString();
         }
@@ -78,9 +86,9 @@ public class RegisterController {
                 stringGenerator.generateString(20, StringGenerator.MODE.MODE_LOWER_CASE_LETTERS));
         confirmService.create(confirm);
 
+        String confirmUrl = "http://localhost:8080" + URLS.ACCOUNT_CONFIRM_URL + confirm.getValue();
 
-        mail.setAddressTo(user.getEmail());
-        mail.sendMessage("Account confirm", "Please go to: http://localhost:8080/account/confirm/"+confirm.getValue());
+        mail.sendHtmlMessage("Account confirm", compiler.compile("email", request.getLocale(), Collections.singletonMap("link", confirmUrl)), user.getEmail());
         return new JSONResponse().toString();
     }
 

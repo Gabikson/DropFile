@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.util.Properties;
 
 @Component
@@ -20,11 +17,11 @@ import java.util.Properties;
 public class MailClient {
 
     private final String EMAIL_PROPERTIES_NAME = "email";
+
     @Autowired
     private ResourcesPropertiesBundle propertiesBundle;
 
     private String addressFrom;
-    private String addressTo;
     private String login;
     private String password;
     private Properties configProperties;
@@ -37,28 +34,6 @@ public class MailClient {
         this.addressFrom = configProperties.getProperty("senderaddress");
     }
 
-    public MailClient() {}
-
-    public MailClient(String from, String to) {
-        this.addressFrom = from;
-        this.addressTo = to;
-    }
-
-    public MailClient(String from, String to, String login, String pwd) {
-        this.addressFrom = from;
-        this.addressTo = to;
-        this.login = login;
-        this.password = pwd;
-    }
-
-    public String getAddressTo() {
-        return addressTo;
-    }
-
-    public void setAddressTo(String addressTo) {
-        this.addressTo = addressTo;
-    }
-
     public Properties getConfigProperties() {
         return configProperties;
     }
@@ -67,14 +42,14 @@ public class MailClient {
         this.configProperties = configProperties;
     }
 
-    public boolean sendMessage(String subject, String messageText) {
+    public boolean sendSimpleMessage(String subject, String messageText, String addressTo) {
         boolean sendResult = true;
         Session session = Session.getDefaultInstance(configProperties);
         MimeMessage message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(this.addressFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-                    this.addressTo));
+                    addressTo));
             message.setSubject(subject);
             message.setText(messageText, "UTF-8");
             Transport.send(message, login, password);
@@ -86,5 +61,33 @@ public class MailClient {
             e.printStackTrace();
         }
         return sendResult;
+    }
+
+    public boolean sendHtmlMessage(String subject, String messageText, String addressTo, FileDataSource... attachments) throws MessagingException {
+        boolean sendResult = true;
+        Session session = Session.getDefaultInstance(configProperties);
+        MimeMessage message = new MimeMessage(session);
+
+        message.setSubject(subject);
+        message.setFrom(new InternetAddress(this.addressFrom));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
+
+        BodyPart body = new MimeBodyPart();
+        body.setContent(messageText, "text/html; charset=utf-8");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(body);
+
+        if(attachments.length > 0) {
+            for(int i = 0; i < attachments.length; i++) {
+                body = new MimeBodyPart();
+                body.setDataHandler(new DataHandler(attachments[i]));
+                multipart.addBodyPart(body);
+            }
+        }
+
+        message.setContent(multipart);
+        Transport.send(message, login, password);
+        return true;
     }
 }

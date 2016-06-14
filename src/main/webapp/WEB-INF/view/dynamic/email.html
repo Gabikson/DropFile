@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>Email</title>
+    <style type="text/css">
+        body{
+            background: #000;
+            color: #8121ee;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="#{email.account.activation.header}">Email header</h1>
+<span th:text="#{email.account.activation.text1}">Pls., go to URL: to confirm registration</span>
+<span th:text="${link}">#</span>
+<span th:text="#{email.account.activation.text2}"></span>
+</body>
+</html>
