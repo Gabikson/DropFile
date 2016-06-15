@@ -1,6 +1,7 @@
 package com.gabiksoft.webapp.utils;
 
 import com.gabiksoft.webapp.email.MailClient;
+import com.gabiksoft.webapp.service.EmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,13 @@ public class TemplateCompilerTest {
     private TemplateCompiler templateCompiler;
 
     @Autowired
-    private MailClient mailClient;
+    private EmailService emailService;
 
     @Test
     public void testCompile() throws Exception {
         String confirmUrl = "http://www.google.com.ua";
-       String html = templateCompiler.compile("email", Locale.getDefault(), Collections.singletonMap("link", confirmUrl));
-        mailClient.sendHtmlMessage("Title text", html, "gabikson@gmail.com");
+       String html = templateCompiler.compile("email", Locale.forLanguageTag("uk"), Collections.singletonMap("link", confirmUrl));
+        System.out.println(html);
+       // emailService.sendHtmlMessage("Title", "gabikson@gmail.com", html);
     }
 }

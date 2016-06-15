@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.activation.FileDataSource;
+import javax.mail.MessagingException;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -15,12 +16,13 @@ public class EmailServiceImpl implements EmailService {
     private MailClient mailClient;
 
     @Override
-    public void sendRawMessage(String title, String receiver, String text) {
-        mailClient.sendSimpleMessage(title, text, receiver);
+    public void sendRawMessage(String receiver, String title, String text) {
+        mailClient.sendSimpleMessage(receiver, title, text);
     }
 
     @Override
-    public void SendHtmlMessage(String title, String receiver, String text, FileDataSource... attachments) {
-
+    public void sendHtmlMessage(String receiver, String title, String text, FileDataSource... attachments)
+            throws MessagingException {
+        mailClient.sendHtmlMessage(title, text, receiver, attachments);
     }
 }

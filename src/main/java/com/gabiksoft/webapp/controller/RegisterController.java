@@ -8,16 +8,14 @@ import com.gabiksoft.webapp.entity.Confirm;
 import com.gabiksoft.webapp.entity.Role;
 import com.gabiksoft.webapp.entity.User;
 import com.gabiksoft.webapp.enums.ConfirmType;
-import com.gabiksoft.webapp.service.ConfirmService;
-import com.gabiksoft.webapp.service.FileService;
+import com.gabiksoft.webapp.service.*;
 import com.gabiksoft.webapp.utils.JSONResponse;
 import com.gabiksoft.webapp.utils.StringGenerator;
 import com.gabiksoft.webapp.utils.TemplateCompiler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.gabiksoft.webapp.service.RoleService;
-import com.gabiksoft.webapp.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +38,7 @@ public class RegisterController {
     private FileService avatarService;
 
     @Autowired
-    private MailClient mail;
+    private EmailService emailService;
 
     @Autowired
     private StringGenerator stringGenerator;
@@ -88,7 +86,7 @@ public class RegisterController {
 
         String confirmUrl = "http://localhost:8080" + URLS.ACCOUNT_CONFIRM_URL + confirm.getValue();
 
-        mail.sendHtmlMessage("Account confirm", compiler.compile("email", request.getLocale(), Collections.singletonMap("link", confirmUrl)), user.getEmail());
+        emailService.sendHtmlMessage(user.getEmail(), "Account confirm", compiler.compile("email", LocaleContextHolder.getLocale(), Collections.singletonMap("link", confirmUrl)));
         return new JSONResponse().toString();
     }
 
