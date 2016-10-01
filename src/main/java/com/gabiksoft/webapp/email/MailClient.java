@@ -1,6 +1,7 @@
 package com.gabiksoft.webapp.email;
 
-import com.gabiksoft.webapp.utils.ResourcesPropertiesBundle;
+import com.gabiksoft.webapp.constants.settings.Email;
+import com.gabiksoft.webapp.engine.settings.service.ServerSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -9,17 +10,22 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 @Component
 @Scope("singleton")
 public class MailClient {
 
-    private final String EMAIL_PROPERTIES_NAME = "email";
+    private final static String EMAIL_ENCODE = "utf-8";
+    private final static String EMAIL_CONTENT_TYPE = "text/html; charset=";
+
 
     @Autowired
-    private ResourcesPropertiesBundle propertiesBundle;
+    private ServerSettings serverSettings;
 
     private String addressFrom;
     private String login;
@@ -28,10 +34,10 @@ public class MailClient {
 
     @PostConstruct
     private void init() throws Exception {
-        this.configProperties = propertiesBundle.readConfigs(EMAIL_PROPERTIES_NAME);
-        this.login = configProperties.getProperty("login");
-        this.password = configProperties.getProperty("password");
-        this.addressFrom = configProperties.getProperty("senderaddress");
+        this.configProperties = serverSettings.readAll(Email.RESOURCE_NAME);
+        this.login = configProperties.getProperty(Email.EMAIL_USER_NAME);
+        this.password = configProperties.getProperty(Email.EMAIL_USER_PASSWORD);
+        this.addressFrom = configProperties.getProperty(Email.SENDER_ADDRESS);
     }
 
     public Properties getConfigProperties() {
@@ -51,11 +57,8 @@ public class MailClient {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(
                     addressTo));
             message.setSubject(subject);
-            message.setText(messageText, "UTF-8");
+            message.setText(messageText, EMAIL_ENCODE);
             Transport.send(message, login, password);
-        } catch (AddressException e) {
-            sendResult = false;
-            e.printStackTrace();
         } catch (MessagingException e) {
             sendResult = false;
             e.printStackTrace();
@@ -64,7 +67,6 @@ public class MailClient {
     }
 
     public boolean sendHtmlMessage(String subject, String messageText, String addressTo, FileDataSource... attachments) throws MessagingException {
-        boolean sendResult = true;
         Session session = Session.getDefaultInstance(configProperties);
         MimeMessage message = new MimeMessage(session);
 
@@ -73,15 +75,15 @@ public class MailClient {
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
 
         BodyPart body = new MimeBodyPart();
-        body.setContent(messageText, "text/html; charset=utf-8");
+        body.setContent(messageText, EMAIL_CONTENT_TYPE + EMAIL_ENCODE);
 
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(body);
 
-        if(attachments.length > 0) {
-            for(int i = 0; i < attachments.length; i++) {
+        if (attachments.length > 0) {
+            for (FileDataSource attachment : attachments) {
                 body = new MimeBodyPart();
-                body.setDataHandler(new DataHandler(attachments[i]));
+                body.setDataHandler(new DataHandler(attachment));
                 multipart.addBodyPart(body);
             }
         }

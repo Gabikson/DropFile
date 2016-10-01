@@ -1,5 +1,6 @@
-package com.gabiksoft.webapp.utils;
+package com.gabiksoft.webapp.engine.impl;
 
+import com.gabiksoft.webapp.engine.settings.service.ServerSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-context.xml")
-public class StringGeneratorTest {
+public class ServerSettingsImplTest {
 
     @Autowired
-    private StringGenerator stringGenerator;
+    private ServerSettings serverSettings;
 
     @Test
-    public void GenerateStringTest() throws Exception {
-        stringGenerator.generateString(10, StringGenerator.MODE.MODE_ALL);
+    public void readStringValueTest() throws Exception {
+        String custom = serverSettings.readStringValue("custom", "host.address");
+        System.out.println(custom);
     }
 }

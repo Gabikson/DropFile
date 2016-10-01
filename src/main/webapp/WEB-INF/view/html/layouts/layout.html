@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header">
+    <title>qqq</title>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0"/>
+    <link href="/bs/css/bootstrap.min.css" th:href="@{/bs/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="/css/custom.css" th:href="@{/css/custom.css}" rel="stylesheet"/>
+    <div class="page-header">
+        <div sec:authorize="isAuthenticated()">
+            <div class="btn-group pull-right">
+                <div class="dropdown-toggle user-session" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    <div th:switch="${has_avatar == true}">
+                        <div th:case="${true}">
+                            <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
+                                 th:src="@{/avatar/userphoto}"/>
+                        </div>
+                        <div th:case="${false}">
+                            <img class="img-circle menuavatar" src="/images/defaultavatar.jpg"
+                                 th:src="@{/images/defaultavatar.jpg}"/>
+                        </div>
+                    </div>
+                    <div sec:authentication="principal.username">User name</div>
+
+                </div>
+                <ul class="dropdown-menu session-menu">
+                    <li>
+                        <div type="button" class="btn btn-sm-2" id="profile" value="Profile">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </div>
+                        <div type="button" class="btn btn-sm-2" id="profile" value="Profile">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </div>
+                        <div type="button" class="btn btn-sm-2" id="profile" value="Profile">
+                            <span class="glyphicon glyphicon-music" aria-hidden="true"></span>
+                        </div>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <input type="button" class="btn-danger btn-primary btn-sm btn-block" id="signoutbtn"
+                               th:value="#{session.signout}" value="Sign Out"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="btn-group pull-right">
+            <span><a href="?lang=en"><img class="img-circle lang" src="/images/en.png"
+                                          th:src="@{/images/en.png}"/></a> - <a href="?lang=uk"> <img
+                    class="img-circle lang" src="/images/ua.png"
+                    th:src="@{/images/ua.png}"/></a></span>
+        </div>
+        <div class="pull-left">
+            <a href="/">
+                <h1 th:text="#{header.title}">Title</h1>
+            </a>
+        </div>
+    </div>
+</head>
+<body>
+<div th:fragment="footer">
+    <div id="footer">
+        <div class="container">
+            <p>GabikSoft</p>
+        </div>
+    </div>
+    <script src="/js/jquery-1.12.1.min.js" th:src="@{/js/jquery-1.12.1.min.js}"></script>
+    <script src="/bs/js/bootstrap.min.js" th:src="@{/bs/js/bootstrap.min.js}"></script>
+    <script src="/js/login.js" th:src="@{/js/login.js}"></script>
+</div>
+</body>
+</html>
