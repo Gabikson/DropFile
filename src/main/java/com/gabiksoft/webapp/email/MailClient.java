@@ -84,6 +84,7 @@ public class MailClient {
             for (FileDataSource attachment : attachments) {
                 body = new MimeBodyPart();
                 body.setDataHandler(new DataHandler(attachment));
+                body.setFileName(attachment.getName());
                 multipart.addBodyPart(body);
             }
         }

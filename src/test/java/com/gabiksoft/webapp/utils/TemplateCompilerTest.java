@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.activation.FileDataSource;
+import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -23,9 +25,11 @@ public class TemplateCompilerTest {
 
     @Test
     public void compileTest() throws Exception {
+        FileDataSource attachmant = new FileDataSource(new File("/localstorage/images/new/1.jpg"));
+
+
         String confirmUrl = "http://www.google.com.ua";
-       String html = templateCompiler.compile("email", Locale.forLanguageTag("uk"), Collections.<String, Object>singletonMap("link", confirmUrl));
-        System.out.println(html);
-       // emailService.sendHtmlMessage("Title", "gabikson@gmail.com", html);
+        String html = templateCompiler.compile("email", Locale.forLanguageTag("uk"), Collections.<String, Object>singletonMap("link", confirmUrl));
+        emailService.sendHtmlMessage("gabikson@gmail.com", "Title", html, attachmant);
     }
 }

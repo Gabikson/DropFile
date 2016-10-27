@@ -1,5 +1,7 @@
 package com.gabiksoft.webapp.engine.storage.service;
 
+import com.gabiksoft.webapp.constants.settings.Storage;
+import com.gabiksoft.webapp.engine.settings.service.ServerSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -7,16 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 
-@PropertySource("classpath:server/storage.properties")
 @Service
 public class AvatarServiceImpl implements FileService {
 
     @Autowired
-    private Environment environment;
+    private ServerSettings serverSettings;
 
     @Override
     public void save(String name, byte[] bytes) throws IOException {
-        String avatarFolder = environment.getProperty("avatar.path") + "\\";
+        String avatarFolder = getUserPhotoPath() + "\\";
         makeIfNotExists(avatarFolder);
         OutputStream avatar = new FileOutputStream(avatarFolder + name);
         avatar.write(bytes);
@@ -26,13 +27,13 @@ public class AvatarServiceImpl implements FileService {
 
     @Override
     public boolean remove(String name) {
-        String avatarFolder = environment.getProperty("avatar.path") + "\\";
+        String avatarFolder = getUserPhotoPath() + "\\";
         return new File(avatarFolder+name).delete();
     }
 
     @Override
     public InputStream get(String fileName) throws IOException {
-        String avatarFolder = environment.getProperty("avatar.path") + "\\";
+        String avatarFolder = getUserPhotoPath() + "\\";
         FileInputStream fis = new FileInputStream(avatarFolder+fileName);
         return fis;
     }
@@ -42,5 +43,9 @@ public class AvatarServiceImpl implements FileService {
         if(!file.exists()) {
             file.mkdir();
         }
+    }
+
+    private String getUserPhotoPath() {
+        return serverSettings.readStringValue(Storage.RESOURCE_NAME, Storage.USER_PHOTO_PATH);
     }
 }
