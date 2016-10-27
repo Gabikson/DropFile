@@ -85,6 +85,8 @@
         <property name="changeLog" value="WEB-INF/configs/db/db-changelog.xml"/>
     </bean>
 
+    <import resource="jobs-config.xml"/>
+
     <context:annotation-config/>
 
     <context:component-scan base-package="com.gabiksoft.webapp.engine.custom.dao"/>

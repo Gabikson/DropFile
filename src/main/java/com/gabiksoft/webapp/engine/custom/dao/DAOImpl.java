@@ -20,11 +20,7 @@ public class DAOImpl<T> implements DAO<T> {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public DAOImpl() {
-//        ParameterizedType genericSuperclass = (ParameterizedType) getClass()
-//                .getGenericSuperclass();
-//        this.entityClass = (Class<T>) genericSuperclass	.getActualTypeArguments()[0];
-    }
+    public DAOImpl() {}
 
     @Override
     public Class<T> getEntityClass() {
