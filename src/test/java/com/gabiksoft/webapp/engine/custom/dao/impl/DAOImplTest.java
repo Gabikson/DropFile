@@ -9,7 +9,6 @@ public class DAOImplTest {
 
     @Test
     public void DaoTest() {
-        DAO<User> dao = new DAOImpl<User>();
 
     }
 }

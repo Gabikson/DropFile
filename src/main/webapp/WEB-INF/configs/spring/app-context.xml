@@ -89,8 +89,7 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="com.gabiksoft.webapp.engine.custom.dao"/>
-    <context:component-scan base-package="com.gabiksoft.webapp.engine.*.service"/>
+    <context:component-scan base-package="com.gabiksoft.webapp.engine.*"/>
     <context:component-scan base-package="com.gabiksoft.webapp.email"/>
     <context:component-scan base-package="com.gabiksoft.webapp.utils"/>
 

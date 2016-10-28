@@ -13,9 +13,11 @@ public interface DAO<T> {
 
     void update(T entity);
 
+    void update(List<T> entities);
+
     void delete(T entity);
 
-    Optional<T> read(int id);
+    Optional<T> read(String id);
 
     Optional<T> findByFieldValue(String field, String value);
 

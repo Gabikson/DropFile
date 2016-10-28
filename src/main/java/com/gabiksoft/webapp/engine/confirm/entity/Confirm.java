@@ -1,8 +1,10 @@
 package com.gabiksoft.webapp.engine.confirm.entity;
 
 import com.gabiksoft.webapp.enums.ConfirmType;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,8 +13,9 @@ public class Confirm {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GenericGenerator(name = "uuid-generator", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-generator")
+    private String id;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
@@ -25,7 +28,7 @@ public class Confirm {
     private String value;
 
     @Column(name = "expiration_time")
-    private LocalDateTime expirationTime;
+    private Timestamp expirationTime;
 
     @Column(name = "status")
     private boolean status;
@@ -39,11 +42,11 @@ public class Confirm {
         this.value = value;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,11 +74,11 @@ public class Confirm {
         this.value = value;
     }
 
-    public LocalDateTime getExpirationTime() {
+    public Timestamp getExpirationTime() {
         return expirationTime;
     }
 
-    public void setExpirationTime(LocalDateTime expirationTime) {
+    public void setExpirationTime(Timestamp expirationTime) {
         this.expirationTime = expirationTime;
     }
 
@@ -94,18 +97,20 @@ public class Confirm {
 
         Confirm confirm = (Confirm) o;
 
-        if (id != confirm.id) return false;
         if (status != confirm.status) return false;
-        if (type != confirm.type) return false;
+        if (expirationTime != null ? !expirationTime.equals(confirm.expirationTime) : confirm.expirationTime != null)
+            return false;
+        if (id != null ? !id.equals(confirm.id) : confirm.id != null) return false;
         if (idType != null ? !idType.equals(confirm.idType) : confirm.idType != null) return false;
+        if (type != confirm.type) return false;
         if (value != null ? !value.equals(confirm.value) : confirm.value != null) return false;
-        return expirationTime != null ? expirationTime.equals(confirm.expirationTime) : confirm.expirationTime == null;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (idType != null ? idType.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);

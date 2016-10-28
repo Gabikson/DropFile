@@ -11,9 +11,11 @@ public interface GenericService<T> {
 
     void update(T entity);
 
-    void delete(int id);
+    void update(List<T> entities);
 
-    T getById(int id) throws EntityNotFoundException;
+    void delete(String id);
+
+    T getById(String id) throws EntityNotFoundException;
 
     T findByFieldValue(String field, String value) throws EntityNotFoundException;
 

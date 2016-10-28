@@ -1,6 +1,7 @@
 package com.gabiksoft.webapp.engine.user.entity;
 
 import com.sun.istack.internal.NotNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,8 +13,9 @@ public class Role {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GenericGenerator(name = "uuid-generator", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-generator")
+    private String id;
 
     @NotNull
     @Column(name = "role")
@@ -25,11 +27,11 @@ public class Role {
     public Role() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -52,20 +54,22 @@ public class Role {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Role)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Role role1 = (Role) o;
 
-        if (id != role1.id) return false;
-        if (!role.equals(role1.role)) return false;
+        if (id != null ? !id.equals(role1.id) : role1.id != null) return false;
+        if (role != null ? !role.equals(role1.role) : role1.role != null) return false;
+        if (users != null ? !users.equals(role1.users) : role1.users != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + role.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (users != null ? users.hashCode() : 0);
         return result;
     }
 }

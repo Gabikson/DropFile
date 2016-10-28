@@ -3,14 +3,15 @@ package com.gabiksoft.webapp.engine.custom.service;
 
 import com.gabiksoft.webapp.engine.custom.dao.DAO;
 import com.gabiksoft.webapp.engine.custom.exception.EntityNotFoundException;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public abstract class GenericSeviceImpl<T> implements GenericService<T>{
+public abstract class GenericServiceImpl<I extends DAO<T>, T> implements GenericService<T> {
 
-    protected DAO<T> dao;
+    protected I dao;
 
     @Override
     public void create(T entity) {
@@ -23,12 +24,22 @@ public abstract class GenericSeviceImpl<T> implements GenericService<T>{
     }
 
     @Override
-    public void delete(int id) {
-        dao.read(id).map(entity -> {dao.delete(entity); return null;});
+    public void update(List<T> entities) {
+        if (!CollectionUtils.isEmpty(entities)) {
+            dao.update(entities);
+        }
     }
 
     @Override
-    public T getById(int id) throws EntityNotFoundException {
+    public void delete(String id) {
+        dao.read(id).map(entity -> {
+            dao.delete(entity);
+            return null;
+        });
+    }
+
+    @Override
+    public T getById(String id) throws EntityNotFoundException {
         return dao.read(id).orElseThrow(() -> new EntityNotFoundException());
     }
 

@@ -2,8 +2,9 @@ package com.gabiksoft.webapp.engine.user.service;
 
 
 import com.gabiksoft.webapp.engine.custom.dao.DAO;
-import com.gabiksoft.webapp.engine.custom.service.GenericSeviceImpl;
+import com.gabiksoft.webapp.engine.custom.service.GenericServiceImpl;
 import com.gabiksoft.webapp.engine.security.service.SecurityServiceImpl;
+import com.gabiksoft.webapp.engine.user.dao.UserDAO;
 import com.gabiksoft.webapp.engine.user.entity.User;
 import com.gabiksoft.webapp.exceptions.UserNotAuthenticated;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class UserServiceImpl extends GenericSeviceImpl<User> implements UserService {
-
+public class UserServiceImpl extends GenericServiceImpl<UserDAO, User> implements UserService {
 
     @Autowired
     private ShaPasswordEncoder passwordEncoder;
@@ -25,7 +25,7 @@ public class UserServiceImpl extends GenericSeviceImpl<User> implements UserServ
 
 
     @Autowired
-    public UserServiceImpl(DAO<User> dao) {
+    public UserServiceImpl(UserDAO dao) {
         this.dao = dao;
         this.dao.setEntityClass(User.class);
     }

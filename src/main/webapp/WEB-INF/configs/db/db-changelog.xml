@@ -44,7 +44,7 @@
     <!--</changeSet>-->
     <changeSet id="Adding roles" author="Gabik">
         <insert tableName="roles">
-            <column name="id" value="1"/>
+            <column name="id" value="ROLE_USER"/>
             <column name="role" value="ROLE_USER"/>
         </insert>
     </changeSet>

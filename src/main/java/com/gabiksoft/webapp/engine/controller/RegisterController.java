@@ -96,7 +96,7 @@ public class RegisterController {
         User user = new User(username, password, false, email, userRole, avatarFileName);
         userService.create(user);
 
-        Confirm confirm = buildConfirm(String.valueOf(user.getId()), ConfirmType.ACCOUNT,
+        Confirm confirm = buildConfirm(user.getId(), ConfirmType.ACCOUNT,
                 stringGenerator.generateString(20, StringGenerator.MODE.MODE_LOWER_CASE_LETTERS));
         confirmService.create(confirm);
 
@@ -109,7 +109,7 @@ public class RegisterController {
     @RequestMapping(value = "/account/confirm/{activation_id}", method = RequestMethod.GET)
     public String confirmEmail(@PathVariable(value = "activation_id") String activationId) throws EntityNotFoundException {
         String userId = confirmService.findByFieldValue("value", activationId).getIdType();
-        User user = userService.getById(Integer.parseInt(userId));
+        User user = userService.getById(userId);
         user.setEnabled(true);
         userService.update(user);
         return "accountconfirm";

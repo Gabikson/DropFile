@@ -8,7 +8,7 @@
         <property name="cronExpression" value="0/10 * * * * ?"/>
         <property name="jobDetail">
             <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-                <property name="jobClass" value="com.gabiksoft.webapp.engine.jobs.ConfirmRegistrationRemainderJob"/>
+                <property name="jobClass" value="com.gabiksoft.webapp.engine.jobs.ConfirmRegistrationTimeoutJob"/>
             </bean>
         </property>
     </bean>

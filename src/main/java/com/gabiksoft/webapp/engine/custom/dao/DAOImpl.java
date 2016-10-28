@@ -11,14 +11,12 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class DAOImpl<T> implements DAO<T> {
+public abstract class DAOImpl<T> implements DAO<T> {
 
     private Class<T> entityClass;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public DAOImpl() {}
 
@@ -43,12 +41,17 @@ public class DAOImpl<T> implements DAO<T> {
     }
 
     @Override
+    public void update(List<T> entities) {
+        entities.forEach(entity -> update(entity));
+    }
+
+    @Override
     public void delete(T entity) {
         entityManager.remove(entity);
     }
 
     @Override
-    public Optional<T> read(int id) {
+    public Optional<T> read(String id) {
         try {
             return Optional.ofNullable((T) entityManager.find(entityClass, id));
         } catch (NoResultException e) {
