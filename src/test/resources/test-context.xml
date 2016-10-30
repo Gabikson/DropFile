@@ -53,8 +53,7 @@
     <import resource="spring/security-context.xml"/>
     <context:component-scan base-package="com.gabiksoft.webapp.email"/>
     <context:component-scan base-package="com.gabiksoft.webapp.utils"/>
-    <context:component-scan base-package="com.gabiksoft.webapp.engine.*.dao"/>
-    <context:component-scan base-package="com.gabiksoft.webapp.engine.*.service"/>
+    <context:component-scan base-package="com.gabiksoft.webapp.engine.*"/>
 
     <!--<tx:annotation-driven/>-->
 </beans>

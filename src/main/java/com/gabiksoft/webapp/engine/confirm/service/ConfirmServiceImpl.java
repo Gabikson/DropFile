@@ -3,6 +3,7 @@ package com.gabiksoft.webapp.engine.confirm.service;
 import com.gabiksoft.webapp.engine.confirm.dao.ConfirmDAO;
 import com.gabiksoft.webapp.engine.confirm.entity.Confirm;
 import com.gabiksoft.webapp.engine.custom.service.GenericServiceImpl;
+import com.gabiksoft.webapp.enums.ConfirmStatus;
 import com.gabiksoft.webapp.enums.ConfirmType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ConfirmServiceImpl extends GenericServiceImpl<ConfirmDAO, Confirm> 
     }
 
     @Override
-    public List<Confirm> getNotExpired(boolean status, ConfirmType... confirmTypes) {
+    public List<Confirm> getNotExpired(ConfirmStatus status, ConfirmType... confirmTypes) {
         return dao.findNotExpiried(status, confirmTypes).orElse(new ArrayList<>());
     }
 }

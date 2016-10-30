@@ -1,11 +1,11 @@
 package com.gabiksoft.webapp.engine.confirm.entity;
 
+import com.gabiksoft.webapp.enums.ConfirmStatus;
 import com.gabiksoft.webapp.enums.ConfirmType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "confirm")
@@ -31,15 +31,17 @@ public class Confirm {
     private Timestamp expirationTime;
 
     @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private ConfirmStatus status;
 
     public Confirm() {
     }
 
-    public Confirm(ConfirmType type, String idType, String value) {
+    public Confirm(ConfirmType type, String idType, String value, Timestamp expirationTime) {
         this.type = type;
         this.idType = idType;
         this.value = value;
+        this.expirationTime = expirationTime;
     }
 
     public String getId() {
@@ -82,11 +84,11 @@ public class Confirm {
         this.expirationTime = expirationTime;
     }
 
-    public boolean isStatus() {
+    public ConfirmStatus getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(ConfirmStatus status) {
         this.status = status;
     }
 
@@ -97,15 +99,14 @@ public class Confirm {
 
         Confirm confirm = (Confirm) o;
 
-        if (status != confirm.status) return false;
+        if (id != null ? !id.equals(confirm.id) : confirm.id != null) return false;
+        if (type != confirm.type) return false;
+        if (idType != null ? !idType.equals(confirm.idType) : confirm.idType != null) return false;
+        if (value != null ? !value.equals(confirm.value) : confirm.value != null) return false;
         if (expirationTime != null ? !expirationTime.equals(confirm.expirationTime) : confirm.expirationTime != null)
             return false;
-        if (id != null ? !id.equals(confirm.id) : confirm.id != null) return false;
-        if (idType != null ? !idType.equals(confirm.idType) : confirm.idType != null) return false;
-        if (type != confirm.type) return false;
-        if (value != null ? !value.equals(confirm.value) : confirm.value != null) return false;
+        return status == confirm.status;
 
-        return true;
     }
 
     @Override
@@ -115,7 +116,7 @@ public class Confirm {
         result = 31 * result + (idType != null ? idType.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (expirationTime != null ? expirationTime.hashCode() : 0);
-        result = 31 * result + (status ? 1 : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 }

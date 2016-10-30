@@ -4,21 +4,21 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <bean name="confirmregistrationTimeOutJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean name="confirmRegistrationTimeOutJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="cronExpression" value="0/10 * * * * ?"/>
         <property name="jobDetail">
-            <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-                <property name="jobClass" value="com.gabiksoft.webapp.engine.jobs.ConfirmRegistrationTimeoutJob"/>
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject" ref="confirmRegistrationTimeoutJob"/>
+                <property name="targetMethod" value="execute"/>
             </bean>
         </property>
     </bean>
 
 
-
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="confirmregistrationTimeOutJob"/>
+                <ref bean="confirmRegistrationTimeOutJob"/>
             </list>
         </property>
     </bean>

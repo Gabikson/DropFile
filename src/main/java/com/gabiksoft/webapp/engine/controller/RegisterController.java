@@ -3,18 +3,18 @@ package com.gabiksoft.webapp.engine.controller;
 import com.gabiksoft.webapp.constants.Messages;
 import com.gabiksoft.webapp.constants.Roles;
 import com.gabiksoft.webapp.constants.URLS;
-import com.gabiksoft.webapp.engine.confirm.entity.Confirm;
-import com.gabiksoft.webapp.engine.custom.exception.EntityNotFoundException;
-import com.gabiksoft.webapp.engine.user.entity.Role;
-import com.gabiksoft.webapp.engine.user.entity.User;
-import com.gabiksoft.webapp.enums.ConfirmType;
 import com.gabiksoft.webapp.constants.settings.Host;
+import com.gabiksoft.webapp.engine.confirm.entity.Confirm;
 import com.gabiksoft.webapp.engine.confirm.service.ConfirmService;
+import com.gabiksoft.webapp.engine.custom.exception.EntityNotFoundException;
 import com.gabiksoft.webapp.engine.email.service.EmailService;
 import com.gabiksoft.webapp.engine.settings.service.ServerSettings;
 import com.gabiksoft.webapp.engine.storage.service.FileService;
+import com.gabiksoft.webapp.engine.user.entity.Role;
+import com.gabiksoft.webapp.engine.user.entity.User;
 import com.gabiksoft.webapp.engine.user.service.RoleService;
 import com.gabiksoft.webapp.engine.user.service.UserService;
+import com.gabiksoft.webapp.enums.ConfirmType;
 import com.gabiksoft.webapp.utils.JSONResponse;
 import com.gabiksoft.webapp.utils.StringGenerator;
 import com.gabiksoft.webapp.utils.TemplateCompiler;
@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
@@ -120,6 +122,7 @@ public class RegisterController {
     }
 
     private Confirm buildConfirm(String userId, ConfirmType confirmType, String value) {
-        return new Confirm(confirmType, userId, value);
+        Timestamp expirationTime = Timestamp.valueOf(LocalDateTime.now().plusHours(24));
+        return new Confirm(confirmType, userId, value, expirationTime);
     }
 }
