@@ -37,11 +37,12 @@ public class Confirm {
     public Confirm() {
     }
 
-    public Confirm(ConfirmType type, String idType, String value, Timestamp expirationTime) {
+    public Confirm(ConfirmType type, String idType, String value, Timestamp expirationTime, ConfirmStatus status) {
         this.type = type;
         this.idType = idType;
         this.value = value;
         this.expirationTime = expirationTime;
+        this.status = status;
     }
 
     public String getId() {

@@ -24,8 +24,8 @@ import static org.junit.Assert.*;
 @ContextConfiguration("classpath:test-context.xml")
 public class ConfirmServiceImplTest {
 
-    private Confirm confirm1 = new Confirm(ConfirmType.ACCOUNT, "12", "test1", Timestamp.from(Instant.now()));
-    private Confirm confirm2 = new Confirm(ConfirmType.EMAIL, "34", "test2", Timestamp.from(Instant.now()));
+    private Confirm confirm1 = new Confirm(ConfirmType.ACCOUNT, "12", "test1", Timestamp.from(Instant.now()), ConfirmStatus.ACTIVE);
+    private Confirm confirm2 = new Confirm(ConfirmType.EMAIL, "34", "test2", Timestamp.from(Instant.now()), ConfirmStatus.INACTIVE );
 
     @Autowired
     private ConfirmDAO confirmDAO;

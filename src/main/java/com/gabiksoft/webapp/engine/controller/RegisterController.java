@@ -14,6 +14,7 @@ import com.gabiksoft.webapp.engine.user.entity.Role;
 import com.gabiksoft.webapp.engine.user.entity.User;
 import com.gabiksoft.webapp.engine.user.service.RoleService;
 import com.gabiksoft.webapp.engine.user.service.UserService;
+import com.gabiksoft.webapp.enums.ConfirmStatus;
 import com.gabiksoft.webapp.enums.ConfirmType;
 import com.gabiksoft.webapp.utils.JSONResponse;
 import com.gabiksoft.webapp.utils.StringGenerator;
@@ -49,9 +50,6 @@ public class RegisterController {
     private EmailService emailService;
 
     @Autowired
-    private StringGenerator stringGenerator;
-
-    @Autowired
     private ConfirmService confirmService;
 
     @Autowired
@@ -62,13 +60,14 @@ public class RegisterController {
 
     @RequestMapping("/register")
     public String goRegister(HttpServletRequest request) {
-        return "registration";
+        return "account/registration";
     }
 
+    private final int CONFIRM_ID_LENGTH = 20;
+    private final int CONFIRM_REGISTRATION_LINK_TTL_IN_HOURS = 24;
+
     @RequestMapping(value = "/registerme", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    String registerUser(HttpServletRequest request,
+    public @ResponseBody String registerUser(HttpServletRequest request,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
                         @RequestParam("email") String email,
@@ -99,7 +98,7 @@ public class RegisterController {
         userService.create(user);
 
         Confirm confirm = buildConfirm(user.getId(), ConfirmType.ACCOUNT,
-                stringGenerator.generateString(20, StringGenerator.MODE.MODE_LOWER_CASE_LETTERS));
+                StringGenerator.generateString(CONFIRM_ID_LENGTH, StringGenerator.MODE.MODE_LOWER_CASE_LETTERS));
         confirmService.create(confirm);
 
         String confirmUrl = baseUrl + URLS.ACCOUNT_CONFIRM_URL + confirm.getValue();
@@ -110,11 +109,16 @@ public class RegisterController {
 
     @RequestMapping(value = "/account/confirm/{activation_id}", method = RequestMethod.GET)
     public String confirmEmail(@PathVariable(value = "activation_id") String activationId) throws EntityNotFoundException {
-        String userId = confirmService.findByFieldValue("value", activationId).getIdType();
-        User user = userService.getById(userId);
-        user.setEnabled(true);
-        userService.update(user);
-        return "accountconfirm";
+        Confirm confirm = confirmService.findByFieldValue("value", activationId);
+        if(confirm.getStatus() != ConfirmStatus.INACTIVE) {
+            User user = userService.getById(confirm.getIdType());
+            user.setEnabled(true);
+            userService.update(user);
+            return "account/accountconfirm";
+        } else {
+            return "error/linkexpired";
+        }
+
     }
 
     private Role getRoleUser() throws EntityNotFoundException {
@@ -122,7 +126,7 @@ public class RegisterController {
     }
 
     private Confirm buildConfirm(String userId, ConfirmType confirmType, String value) {
-        Timestamp expirationTime = Timestamp.valueOf(LocalDateTime.now().plusHours(24));
-        return new Confirm(confirmType, userId, value, expirationTime);
+        Timestamp expirationTime = Timestamp.valueOf(LocalDateTime.now().plusHours(CONFIRM_REGISTRATION_LINK_TTL_IN_HOURS));
+        return new Confirm(confirmType, userId, value, expirationTime, ConfirmStatus.ACTIVE);
     }
 }

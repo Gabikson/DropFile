@@ -15,17 +15,11 @@ $('#registerme').on('click',function(){
         processData:false,
         contentType: false,
         data: form,
-        //{
-        //    'username' : $('#username').val(),
-        //    'password' : $('#password').val(),
-        //    'email'    : $('#email').val(),
-        //    'avatar'   : $('#uploadAvatar')[0].files[0]
-        //},
         beforeSend:function(xhr){
             xhr.setRequestHeader(header, token);
         },
         success: function(data){
-            alert(data);
+            $('#success_window').modal();
         },
         error: function(data){
             alert('Error');

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layouts/layout :: header"></head>
+<link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>>
+<body>
+<center><h1 class="alert" role="banner" th:text="#{link.expiried}">Link has been expired</h1></center>
+<!--<div th:include="login :: #login-container"/>-->
+<div th:include="layouts/layout :: footer"></div>
+</body>
+</html>

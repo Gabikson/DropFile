@@ -6,6 +6,23 @@
 <link href="/css/avatar.css" th:href="@{/css/avatar.css}" rel="stylesheet"/>
 <body>
 <div class="container">
+    <div id="success_window" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" th:text="#{registration.success.title}">Registration successful!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="#{registration.success.body}">Message text</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+    </div>
     <form method="post" enctype="application/x-www-form-urlencoded" class="form-register"
           role="form">
         <h3 th:text="#{form.registration.title}">New user registration:</h3>
