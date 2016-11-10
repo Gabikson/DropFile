@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layouts/layout :: header"></head>
+
+<body>
+<div class="container" id="login-container" >
+<button id="btn" value="test"/>
+</div>
+<div th:include="layouts/layout :: footer"></div>
+<script src="/js/sockjs-0.3.js" th:src="@{/js/sockjs-0.3.js}"></script>
+<script src="/js/socket-client.js" th:src="@{/js/socket-client.js}"></script>
+</body>
+
+</html>
