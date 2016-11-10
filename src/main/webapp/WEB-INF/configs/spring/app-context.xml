@@ -86,6 +86,7 @@
     </bean>
 
     <import resource="jobs-config.xml"/>
+    <import resource="web-sockets.xml"/>
 
     <context:annotation-config/>
 
